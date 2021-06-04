@@ -7,7 +7,7 @@ This repository contains all the supplementary materials of our manuscript.
 
 The table of contents is as follows.  
 
-- [1. Supplementary Materials.docx](#1-supplementary-materials-docx)
+- [1. Supplementary Materials.docx](#1-supplementary-materials.docx)
 - [2. utils.R](#1-utils-r)
 - [3. simulation.R](#3-simulation-r)
 - [4. replication.R](#4-replication-r)
