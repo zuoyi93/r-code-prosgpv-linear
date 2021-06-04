@@ -7,12 +7,12 @@ This repository contains all the supplementary materials of our manuscript.
 
 The table of contents is as follows.  
 
-- [1. Supplementary Materials.docx](#1-supplementary-materials.docx)
-- [2. utils.R](#1-utils-r)
-- [3. simulation.R](#3-simulation-r)
-- [4. replication.R](#4-replication-r)
-- [5. data.RData](#5-data-rdata)
-- [6. r-code-prosgpv-linear.Rproj](#6-r-code-prosgpv-linear-rproj)
+- [1. Supplementary Materials.docx](#1-supplementary-materialsdocx)
+- [2. utils.R](#1-utilsr)
+- [3. simulation.R](#3-simulationr)
+- [4. replication.R](#4-replicationr)
+- [5. data.RData](#5-datardata)
+- [6. r-code-prosgpv-linear.Rproj](#6-r-code-prosgpv-linearrproj)
 - [7. Figures](#7-figures)
 	
 
