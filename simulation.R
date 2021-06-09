@@ -531,7 +531,8 @@ index.keep <- setdiff(1:(ncol(t.housing) - 1), index.drop)
 
 length(index.keep) # 9
 
-summary(lm(V9 ~ ., data = t.housing[,
+summary(lm(V9 ~ ., data = t.housing[
+  ,
   setdiff(1:ncol(t.housing), index.drop)
 ])) # R^2=0.40
 
@@ -542,7 +543,7 @@ summary(lm(V9 ~ ., data = t.housing[,
 set.seed(1)
 
 # IN THE FULL DATA
-temp.full <- replicate(1e3, tehran.one.time(X,Y,1:26) )
+temp.full <- replicate(1e3, tehran.one.time(X, Y, 1:26))
 
 # -------------------
 # variable selection
@@ -576,7 +577,7 @@ box.full <- get.box(temp.full, snr = "high")
 # IN A SUBSET
 set.seed(1)
 
-temp.part <- replicate(1e3, tehran.one.time(x,y,index.keep) )
+temp.part <- replicate(1e3, tehran.one.time(x, y, index.keep))
 
 # -------------------
 # variable selection
@@ -613,7 +614,6 @@ box.part <- get.box(temp.part, snr = "medium")
 # --------------
 
 save(sim.data.fig.2,
-
   fig.3.long.ind.medium,
   fig.3.long.medium.medium,
   fig.3.long.high.medium,
@@ -623,7 +623,6 @@ save(sim.data.fig.2,
   fig.3.wide.ind.high,
   fig.3.wide.medium.high,
   fig.3.wide.high.high,
-
   fig.4.long.ind.medium,
   fig.4.long.medium.medium,
   fig.4.long.high.medium,
@@ -633,7 +632,6 @@ save(sim.data.fig.2,
   fig.4.wide.ind.high,
   fig.4.wide.medium.high,
   fig.4.wide.high.high,
-
   fig.5.long.ind.medium,
   fig.5.long.medium.medium,
   fig.5.long.high.medium,
@@ -643,21 +641,18 @@ save(sim.data.fig.2,
   fig.5.wide.ind.high,
   fig.5.wide.medium.high,
   fig.5.wide.high.high,
-
   supp.fig.1.long.ind.medium,
   supp.fig.1.long.medium.medium,
   supp.fig.1.long.high.medium,
   supp.fig.1.long.ind.high,
   supp.fig.1.long.medium.high,
   supp.fig.1.long.high.high,
-
   supp.fig.2.long.ind.medium,
   supp.fig.2.long.medium.medium,
   supp.fig.2.long.high.medium,
   supp.fig.2.long.ind.high,
   supp.fig.2.long.medium.high,
   supp.fig.2.long.high.high,
-
   supp.fig.3.power.long.ind.medium,
   supp.fig.3.power.long.medium.medium,
   supp.fig.3.power.long.high.medium,
@@ -667,7 +662,6 @@ save(sim.data.fig.2,
   supp.fig.3.power.wide.ind.high,
   supp.fig.3.power.wide.medium.high,
   supp.fig.3.power.wide.high.high,
-
   supp.fig.3.t1.long.ind.medium,
   supp.fig.3.t1.long.medium.medium,
   supp.fig.3.t1.long.high.medium,
@@ -677,7 +671,6 @@ save(sim.data.fig.2,
   supp.fig.3.t1.wide.ind.high,
   supp.fig.3.t1.wide.medium.high,
   supp.fig.3.t1.wide.high.high,
-
   supp.fig.4.fdr.long.ind.medium,
   supp.fig.4.fdr.long.medium.medium,
   supp.fig.4.fdr.long.high.medium,
@@ -687,7 +680,6 @@ save(sim.data.fig.2,
   supp.fig.4.fdr.wide.ind.high,
   supp.fig.4.fdr.wide.medium.high,
   supp.fig.4.fdr.wide.high.high,
-
   supp.fig.4.fndr.long.ind.medium,
   supp.fig.4.fndr.long.medium.medium,
   supp.fig.4.fndr.long.high.medium,
@@ -697,11 +689,9 @@ save(sim.data.fig.2,
   supp.fig.4.fndr.wide.ind.high,
   supp.fig.4.fndr.wide.medium.high,
   supp.fig.4.fndr.wide.high.high,
-
   supp.fig.5.wide.ind.high,
   supp.fig.5.wide.medium.high,
   supp.fig.5.wide.high.high,
-
   supp.fig.6.long.ind.medium,
   supp.fig.6.long.medium.medium,
   supp.fig.6.long.high.medium,
@@ -711,12 +701,9 @@ save(sim.data.fig.2,
   supp.fig.6.wide.ind.high,
   supp.fig.6.wide.medium.high,
   supp.fig.6.wide.high.high,
-  
   hist.full,
   hist.part,
-  
   box.full,
   box.part,
-  
   file = "data.RData"
 )

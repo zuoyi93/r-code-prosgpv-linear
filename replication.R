@@ -860,9 +860,9 @@ dev.off()
 # ------------------------------------
 
 png("Figures/Supp Fig 9.png",
-    width = 8, height = 4, units = "in", res = 300
+  width = 8, height = 4, units = "in", res = 300
 )
 ggarrange(box.full, box.part,
-          ncol = 2
+  ncol = 2
 )
 dev.off()

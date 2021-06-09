@@ -885,7 +885,6 @@ many.sim.main.pe.pr <- function(num.sim = 1e3, n, p, s,
     median.pe.mcp, l.pe.mcp, u.pe.mcp,
     median.pe.scad, l.pe.scad, u.pe.scad,
     median.pe.al, l.pe.al, u.pe.al,
-
     median.pr.sgpv, l.pr.sgpv, u.pr.sgpv,
     median.pr.mcp, l.pr.mcp, u.pr.mcp,
     median.pr.scad, l.pr.scad, u.pr.scad,
@@ -1074,8 +1073,7 @@ get.plot.fig.5 <- function(data, cor, p = 200, np = c("n", "p")) {
 
 # get the index of selected variables
 get.out.supp.fig.1 <- function(candidate.index, xs, ys, n, p = 50) {
-  out.original <- out.0 <- out.sigma <- out.i.sqrt.log.n <-
-    out.sqrt.log.n <- integer(0)
+  out.original <- out.0 <- out.sigma <- out.i.sqrt.log.n <- out.sqrt.log.n <- integer(0)
 
   if (length(candidate.index) > 0) {
     # run fully relaxed LASSO
@@ -1098,8 +1096,7 @@ get.out.supp.fig.1 <- function(candidate.index, xs, ys, n, p = 50) {
     out.sigma <- candidate.index[which(abs(pe) > 1.96 * se + null.bound.sigma)]
     out.0 <- candidate.index[which(abs(pe) > 1.96 * se)]
   } else {
-    null.bound.original <- null.bound.0 <-
-      null.bound.sqrt.log.n <- null.bound.sigma <- null.bound.i.sqrt.log.n <- NA
+    null.bound.original <- null.bound.0 <- null.bound.sqrt.log.n <- null.bound.sigma <- null.bound.i.sqrt.log.n <- NA
   }
 
 
@@ -1605,7 +1602,7 @@ get.plot.supp.fig.4 <- function(fdr.data, cor,
         "ProSGPV", "MC+", "SCAD", "Adaptive lasso"
       ), 39), 2),
       rate = c(c(fdr.data), c(fndr.data)),
-      Type = rep(c("pFDR", "pFNDR"), each = 156)
+      Type = rep(c("pFDR", "pFNR"), each = 156)
     )
   } else {
     plot.d <- data.frame(
@@ -1614,7 +1611,7 @@ get.plot.supp.fig.4 <- function(fdr.data, cor,
         "ProSGPV", "MC+", "SCAD", "Adaptive lasso"
       ), 41), 2),
       rate = c(c(fdr.data), c(fndr.data)),
-      Type = rep(c("pFDR", "pFNDR"), each = 164)
+      Type = rep(c("pFDR", "pFNR"), each = 164)
     )
   }
 
@@ -1625,7 +1622,7 @@ get.plot.supp.fig.4 <- function(fdr.data, cor,
     )
   )
 
-  plot.d$Type <- factor(plot.d$Type, levels = c("pFDR", "pFNDR"))
+  plot.d$Type <- factor(plot.d$Type, levels = c("pFDR", "pFNR"))
 
 
   if (xaxis == "p") xlim <- c(p, 5 * p, p / 10) else xlim <- c(1, 40)
@@ -1733,7 +1730,6 @@ many.sim.supp.fig.5 <- function(num.sim = 1e3, n, p = 50, s = 4,
     median(out[3, ]), # prediction
     as.numeric(quantile(out[3, ], 0.25)),
     as.numeric(quantile(out[3, ], 0.75)),
-
     mean(out[4, ]), # capture rate of the true model
     median(out[5, ]), # parameter estimation
     as.numeric(quantile(out[5, ], 0.25)),
@@ -1838,7 +1834,7 @@ get.plot.supp.fig.5 <- function(data, cor, outcome, num.sim = 1e3) {
       labs(
         x = "p", y = "Average capture rate", col = "Method",
         title = title.p
-      ) + 
+      ) +
       geom_ribbon(data = ci.d, aes(
         x = x, ymin = lb, ymax = ub,
         fill = method
@@ -2010,8 +2006,7 @@ many.sim.supp.fig.6 <- function(num.sim = 1e3, n, p, s, rho, nu) {
 # function to plot the supp fig 6
 
 get.plot.supp.fig.6 <- function(data, cor, p = 200, np = c("n", "p")) {
-  
-  data[data>0.5] <- 0.5
+  data[data > 0.5] <- 0.5
   # get keywords from data names
   title.p <- ifelse(cor == "ind", "Independent",
     ifelse(cor == "medium", "Medium correlation",
@@ -2089,21 +2084,20 @@ get.plot.supp.fig.6 <- function(data, cor, p = 200, np = c("n", "p")) {
 # Tehran housing data analysis
 # -----------------------------
 
-tehran.one.time <- function(X, Y, index.use = c(1:26, index.keep)){
-  
+tehran.one.time <- function(X, Y, index.use = c(1:26, index.keep)) {
   n <- nrow(X)
-  
+
   # generate training and test indices
   train.index <- sample(1:n, n * 0.7, replace = F)
   test.index <- setdiff(1:n, train.index)
-  
+
   # method 1: prosgpv
   sgpv.out <- pro.sgpv(X[train.index, index.use], Y[train.index])
   sgpv.coef <- coef(sgpv.out)
   sgpv.index <- sgpv.out$var.index
   sgpv.pred <- predict(sgpv.out, newdata = X[test.index, index.use])
   pr.sgpv <- sqrt(mean((sgpv.pred - Y[test.index])^2))
-  
+
   # method 2: mc+
   mcplus <- plus(X[train.index, index.use], Y[train.index], method = "mc+")
   yhat.m <- predict(mcplus, newx = X[train.index, index.use], lam = mcplus$lam)$newy
@@ -2111,47 +2105,47 @@ tehran.one.time <- function(X, Y, index.use = c(1:26, index.keep)){
   mcplus.lambda.index <- which.min(sapply(1:nrow(yhat.m), function(z) {
     n * log(sum((Y[train.index] - yhat.m[z, ])^2)) + p.k[z] * log(log(n)) * log(p.k[z])
   }))
-  
+
   mcplus.coef <- coef(mcplus, lam = mcplus$lam)[mcplus.lambda.index, ]
   mcplus.index <- which(mcplus.coef != 0)
   mcplus.pred <- predict(mcplus,
-                         newx = X[test.index, index.use],
-                         lam = mcplus$lam
+    newx = X[test.index, index.use],
+    lam = mcplus$lam
   )$newy[mcplus.lambda.index, ]
   pr.mcplus <- sqrt(mean((mcplus.pred - Y[test.index])^2))
-  
+
   # method 3: scad
   scad <- ncvreg(X[train.index, index.use], Y[train.index], penalty = "SCAD")
   yhat.m <- predict(scad, X[train.index, index.use])
   p.k <- apply(coef(scad), 2, function(z) sum(z != 0)) + 1
-  
+
   scad.lambda.index <- which.min(sapply(1:ncol(yhat.m), function(z) {
     n * log(sum((Y[train.index] - yhat.m[, z])^2)) + p.k[z] * log(log(n)) * log(p.k[z])
   }))
-  
+
   scad.coef <- coef(scad)[, scad.lambda.index][-1]
-  scad.index <- as.numeric(which(scad.coef!=0))
+  scad.index <- as.numeric(which(scad.coef != 0))
   scad.pred <- predict(scad, X[test.index, index.use], s = scad$lambda[scad.lambda.index])
   pr.scad <- sqrt(mean((scad.pred - Y[test.index])^2))
-  
+
   # method 4: adaptive lasso
   lasso <- glmnet(X[train.index, index.use], Y[train.index])
   init.est <- coef(lasso, s = lasso$lambda[floor(length(lasso$lambda) / 2)])[-1]
   adalasso <- glmnet(X[train.index, index.use], Y[train.index],
-                     penalty.factor = 1 / (abs(init.est))
+    penalty.factor = 1 / (abs(init.est))
   )
   yhat.m <- predict(adalasso, newx = X[train.index, index.use])
   p.k <- apply(coef(adalasso), 2, function(z) sum(z != 0)) + 1
-  
+
   adalasso.lambda.index <- which.min(sapply(1:ncol(yhat.m), function(z) {
     n * log(sum((Y[train.index] - yhat.m[, z])^2)) + p.k[z] * log(log(n)) * log(p.k[z])
   }))
-  
+
   adalasso.coef <- coef(adalasso)[, adalasso.lambda.index][-1]
-  adalasso.index <- as.numeric(which(adalasso.coef!=0))
+  adalasso.index <- as.numeric(which(adalasso.coef != 0))
   pred.al <- predict(adalasso,
-                     newx = X[test.index, index.use],
-                     s = adalasso$lambda[adalasso.lambda.index]
+    newx = X[test.index, index.use],
+    s = adalasso$lambda[adalasso.lambda.index]
   )
   pr.al <- sqrt(mean((pred.al - Y[test.index])^2))
 
@@ -2159,98 +2153,91 @@ tehran.one.time <- function(X, Y, index.use = c(1:26, index.keep)){
     sgpv.index,
     length(sgpv.index),
     pr.sgpv,
-    
     mcplus.index,
     length(mcplus.index),
     pr.mcplus,
-    
     scad.index,
     length(scad.index),
     pr.scad,
-    
     adalasso.index,
     length(adalasso.index),
     pr.al
-    
   ))
-  
-  
 }
 
 # get histogram of model size
 get.hist <- function(data, snr = c("high", "medium")) {
-  
   hist.d <- data.frame(
-    Size = unlist(data[c(2,5,8,11), ]),
-    Algorithm = rep(c("ProSGPV", "MC+",
+    Size = unlist(data[c(2, 5, 8, 11), ]),
+    Algorithm = rep(c(
+      "ProSGPV", "MC+",
       "SCAD", "Adaptive lasso"
     ), 1e3)
   )
   hist.d$Algorithm <- factor(hist.d$Algorithm,
-                             levels = c("ProSGPV", "MC+",
-                                        "SCAD", "Adaptive lasso")
+    levels = c(
+      "ProSGPV", "MC+",
+      "SCAD", "Adaptive lasso"
+    )
   )
-  
+
   cols <- c("black", "springgreen3", "blue", "red")
-  
+
   # histogram
-  if(snr == "high"){
+  if (snr == "high") {
     ggplot(hist.d, aes(x = Size, fill = Algorithm)) +
       geom_density(alpha = 0.6, color = NA) +
       theme_classic() +
       scale_x_continuous(limits = c(0, 24), breaks = seq(0, 24, 4)) +
       scale_fill_manual(values = cols) +
-      labs(x = "Model size", y = "Density", title = "High SNR: 26 variables total") 
-  }else{
+      labs(x = "Model size", y = "Density", title = "High SNR: 26 variables total")
+  } else {
     ggplot(hist.d, aes(x = Size, fill = Algorithm)) +
       geom_density(alpha = 0.6, color = NA) +
       theme_classic() +
       scale_x_continuous(limits = c(0, 9), breaks = seq(0, 9, 1)) +
       scale_fill_manual(values = cols) +
-      labs(x = "Model size", y = "Density", title = "Medium SNR: 9 variables total") 
+      labs(x = "Model size", y = "Density", title = "Medium SNR: 9 variables total")
   }
- 
- 
 }
 
 
 # get boxplot of prediction accuracy
 get.box <- function(data, snr = c("high", "medium")) {
-  
   box.d <- data.frame(
-    error = unlist(data[c(3,6,9,12), ]),
-    Method = rep(c("ProSGPV", "MC+",
-                      "SCAD", "Adaptive lasso"
+    error = unlist(data[c(3, 6, 9, 12), ]),
+    Method = rep(c(
+      "ProSGPV", "MC+",
+      "SCAD", "Adaptive lasso"
     ), 1e3)
   )
   box.d$Method <- factor(box.d$Method,
-                             levels = c("ProSGPV", "MC+",
-                                        "SCAD", "Adaptive lasso")
+    levels = c(
+      "ProSGPV", "MC+",
+      "SCAD", "Adaptive lasso"
+    )
   )
-  
+
   cols <- c("black", "springgreen3", "blue", "red")
-  
+
   # boxplot
-  if(snr == "high"){
-    ggplot(box.d, aes(x = Method, fill = Method , y = error, color = Method)) +
+  if (snr == "high") {
+    ggplot(box.d, aes(x = Method, fill = Method, y = error, color = Method)) +
       geom_boxplot(alpha = 0.6) +
-      theme_classic() +  theme(legend.position = "none") +
-      scale_fill_manual(values = cols) + 
+      theme_classic() +
+      theme(legend.position = "none") +
+      scale_fill_manual(values = cols) +
       scale_y_continuous(limits = c(0, 500), breaks = seq(0, 500, 100)) +
       scale_color_manual(values = cols) +
-      labs(x = "Method", y = "Prediction RMSE in the test set", title = "High SNR: 26 variables total") 
-  }else{
-    ggplot(box.d, aes(x = Method, fill = Method , y = error, color = Method)) +
-      geom_boxplot(alpha = 0.6) + 
-      theme_classic() +  theme(legend.position = "none") +
-      scale_fill_manual(values = cols) + 
+      labs(x = "Method", y = "Prediction RMSE in the test set", title = "High SNR: 26 variables total")
+  } else {
+    ggplot(box.d, aes(x = Method, fill = Method, y = error, color = Method)) +
+      geom_boxplot(alpha = 0.6) +
+      theme_classic() +
+      theme(legend.position = "none") +
+      scale_fill_manual(values = cols) +
       scale_y_continuous(limits = c(0, 2500), breaks = seq(0, 2500, 500)) +
       scale_color_manual(values = cols) +
-      labs(x = "Method", y = "Prediction RMSE in the test set", title = "Medium SNR: 9 variables total") 
+      labs(x = "Method", y = "Prediction RMSE in the test set", title = "Medium SNR: 9 variables total")
   }
-  
 }
-
-
-
-

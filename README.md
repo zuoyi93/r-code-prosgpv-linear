@@ -18,7 +18,7 @@ The table of contents is as follows.
 
 # 1. Supplementary Materials.docx
 
-This `Word` document contains one supplementary table and captions for all supplementary figures.
+This `Word` document contains two supplementary tables and captions for all supplementary figures.
 
 # 2. utils.R
 
